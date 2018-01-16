@@ -283,6 +283,28 @@ SdkImpl.prototype.onAdsManagerLoaded = function(adsManagerLoadedEvent) {
         this.onAdResumed.bind(this));
   }
 
+
+  /**
+  * WIDESPACE - by Usman
+  * Dispatching all events on player
+  **/
+  const player = this.controller.playerWrapper.vjsPlayer;
+  Object.keys(google.ima.AdEvent.Type).forEach ( (key)=> {
+    this.adsManager.addEventListener(google.ima.AdEvent.Type[key], () => {
+      player.trigger('vast.' + google.ima.AdEvent.Type[key]);
+    });
+  });
+
+  Object.keys(google.ima.AdErrorEvent.Type).forEach ( (key)=> {
+    this.adsManager.addEventListener(google.ima.AdErrorEvent.Type[key], () => {
+      player.trigger('vast.' + google.ima.AdErrorEvent.Type[key]);
+    });
+  });
+  /**
+  * End Dispatching all events on player
+  **/
+
+
   if (!this.autoPlayAdBreaks) {
     this.initAdsManager();
   }
